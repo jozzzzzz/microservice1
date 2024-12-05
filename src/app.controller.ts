@@ -7,7 +7,8 @@ export class AppController {
 
   @Get()
   @Header('Content-Type', 'text/html')
-  getHello(): {name: string} {
-    return {name: 'Max'};
+  getHello() {
+    const getHello = this.appService.getHello();
+    return getHello;
   }
 }

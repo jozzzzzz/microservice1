@@ -16,12 +16,12 @@ export class ProductsController {
 
   @Post()
   async addProduct(
-    @Body('title') prodTitle: string,
+    @Body('name') prodName: string,
     @Body('description') prodDesc: string,
     @Body('price') prodPrice: number,
   ) {
     const generatedId = await this.productsService.insertProduct(
-      prodTitle,
+      prodName,
       prodDesc,
       prodPrice,
     );
@@ -43,11 +43,11 @@ export class ProductsController {
   @Patch(':id')
   async updateProduct(
     @Param('id') prodId: string,
-    @Body('title') prodTitle: string,
+    @Body('name') prodName: string,
     @Body('description') prodDesc: string,
     @Body('price') prodPrice: number,
   ) {
-    const updateProduct = await this.productsService.updateProduct(prodId, prodTitle, prodDesc, prodPrice);
+    const updateProduct = await this.productsService.updateProduct(prodId, prodName, prodDesc, prodPrice);
     return updateProduct;
   }
 
