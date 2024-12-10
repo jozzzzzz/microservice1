@@ -1,20 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
+import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './product.model';
 import { v4 as uuidv4 } from 'uuid';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductsService {
   constructor(@InjectModel('Product') private readonly productModel: Model<Product>) {}
 
-  async insertProduct(name: string, desc: string, price: number) {
+  async insertProduct(product: CreateProductDto) {
     const newProduct = new this.productModel({
       productId: uuidv4(),
-      name: name,
-      description: desc, 
-      price: price
+      name: product.name,
+      description: product.description, 
+      price: product.price
     });
     const result = await newProduct.save();
     return result.id as string;
@@ -30,9 +31,9 @@ export class ProductsService {
     return product;
   }
 
-  async updateProduct(productId: string, name: string, desc: string, price: number) {
-    await this.productModel.findOneAndUpdate({productId: productId}, {name: name, description: desc, price: price}).exec();
-    const updatedProduct = await this.findProduct(productId);
+  async updateProduct(product: UpdateProductDto) {
+    await this.productModel.findOneAndUpdate({productId: product.productId}, {name: product.name, description: product.description, price: product.price}).exec();
+    const updatedProduct = await this.findProduct(product.productId);
     return updatedProduct;
   }
 
